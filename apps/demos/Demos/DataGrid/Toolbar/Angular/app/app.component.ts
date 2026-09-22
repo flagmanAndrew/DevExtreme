@@ -1,5 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { Component, ViewChild, enableProdMode, provideZoneChangeDetection } from '@angular/core';
+import {
+  Component, ViewChild, enableProdMode, provideZoneChangeDetection, signal,
+} from '@angular/core';
 import {
   DxDataGridModule,
   DxDataGridComponent,
@@ -30,7 +32,7 @@ export class AppComponent {
 
   totalCount: number;
 
-  expandAll = true;
+  expandAll = signal(true);
 
   groupingValues = [{
     value: 'CustomerStoreState',
@@ -49,13 +51,13 @@ export class AppComponent {
   };
 
   toggleButtonOptions: DxButtonTypes.Properties = {
-    text: this.expandAll ? 'Collapse All' : 'Expand All',
+    text: this.expandAll() ? 'Collapse All' : 'Expand All',
     width: 136,
     onClick: () => {
       this.toggleExpandAll();
       this.toggleButtonOptions = {
         ...this.toggleButtonOptions,
-        text: this.expandAll ? 'Collapse All' : 'Expand All',
+        text: this.expandAll() ? 'Collapse All' : 'Expand All',
       };
     },
   };
@@ -78,7 +80,7 @@ export class AppComponent {
   }
 
   toggleExpandAll() {
-    this.expandAll = !this.expandAll;
+    this.expandAll.update((value) => !value);
   }
 }
 

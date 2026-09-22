@@ -62,6 +62,7 @@ export class AppComponent {
     const clonedItem = { ...e.row.data, ID: this.service.getMaxID() };
 
     this.employees.splice(e.row.rowIndex, 0, clonedItem);
+    e.component.refresh();
     e.event.preventDefault();
   };
 }

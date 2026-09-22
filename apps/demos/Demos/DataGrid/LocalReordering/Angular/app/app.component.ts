@@ -44,6 +44,7 @@ export class AppComponent {
 
     this.tasks.splice(fromIndex, 1);
     this.tasks.splice(toIndex, 0, e.itemData);
+    e.component.refresh();
   };
 }
 

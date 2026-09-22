@@ -72,6 +72,7 @@ export class AppComponent {
 
       const targetIndex = this.employees.indexOf(targetData) + 1;
       this.employees.splice(targetIndex, 0, sourceData);
+      e.component.refresh();
     }
   };
 }

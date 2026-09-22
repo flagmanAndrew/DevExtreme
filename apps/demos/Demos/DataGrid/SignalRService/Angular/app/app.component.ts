@@ -1,8 +1,14 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { Component, enableProdMode, provideZoneChangeDetection } from '@angular/core';
+import {
+  Component,
+  enableProdMode,
+  provideZoneChangeDetection,
+  ChangeDetectionStrategy
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HubConnectionBuilder, HttpTransportType } from '@aspnet/signalr';
 import { DxDataGridModule } from 'devextreme-angular';
-import { CustomStore } from 'devextreme-angular/common/data';
+import { CustomStore, DataSource } from 'devextreme-angular/common/data';
 
 if (!/localhost/.test(document.location.host)) {
   enableProdMode();
@@ -13,11 +19,13 @@ if (!/localhost/.test(document.location.host)) {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   imports: [
+    CommonModule,
     DxDataGridModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppComponent {
-  dataSource: CustomStore;
+  dataSource: DataSource | undefined;
 
   connectionStarted: boolean;
 
@@ -42,7 +50,7 @@ export class AppComponent {
         hubConnection.on('updateStockPrice', (data: Record<string, unknown>) => {
           store.push([{ type: 'update', key: data.symbol, data }]);
         });
-        this.dataSource = store;
+        this.dataSource = new DataSource({ store });
         this.connectionStarted = true;
       });
   }
