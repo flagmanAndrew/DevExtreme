@@ -5,6 +5,7 @@ import {
   AfterViewInit,
   enableProdMode,
   provideZoneChangeDetection,
+  signal
 } from '@angular/core';
 import { DxSelectBoxModule } from 'devextreme-angular';
 import { DxCheckBoxModule, DxCheckBoxTypes } from 'devextreme-angular/ui/check-box';
@@ -47,7 +48,7 @@ export class AppComponent implements AfterViewInit {
     },
   ];
 
-  content: string;
+  content = signal('');
 
   updateContentTimer: unknown;
 
@@ -60,7 +61,7 @@ export class AppComponent implements AfterViewInit {
   pullDown = false;
 
   constructor(service: Service) {
-    this.content = service.getContent();
+    this.content.set(service.getContent());
   }
 
   ngAfterViewInit() {
@@ -75,7 +76,7 @@ export class AppComponent implements AfterViewInit {
     const updateContentText = `<br /><div>Content has been updated on the ${eventName} event.</div><br />`;
     if (this.updateContentTimer) { clearTimeout(this.updateContentTimer as number); }
     this.updateContentTimer = setTimeout(() => {
-      this.content = (eventName === 'PullDown' ? updateContentText + this.content : this.content + updateContentText);
+      this.content.set(eventName === 'PullDown' ? updateContentText + this.content() : this.content() + updateContentText);
       args.component.release(false);
     }, 500);
   };

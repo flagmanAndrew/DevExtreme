@@ -6,7 +6,7 @@
     [width]="200"
   >
   </dx-button>
-  <div class="progress-info"> Time left {{ seconds | time }} </div>
+  <div class="progress-info"> Time left {{ seconds() | time }} </div>
   <dx-progress-bar
     #progressBar
     id="progress-bar-status"
@@ -16,7 +16,7 @@
     [min]="0"
     [max]="maxValue"
     [statusFormat]="format"
-    [value]="maxValue - seconds"
+    [value]="maxValue - seconds()"
   >
   </dx-progress-bar>
 </div>

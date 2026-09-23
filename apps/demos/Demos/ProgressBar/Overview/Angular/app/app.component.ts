@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { Component, Pipe, PipeTransform, enableProdMode, provideZoneChangeDetection } from '@angular/core';
+import { Component, Pipe, PipeTransform, enableProdMode, provideZoneChangeDetection, signal } from '@angular/core';
 import { DxButtonModule, DxProgressBarModule } from 'devextreme-angular';
 
 @Pipe({ name: 'time', standalone: true })
@@ -28,7 +28,7 @@ export class AppComponent {
 
   inProgress = false;
 
-  seconds = 10;
+  seconds = signal(10);
 
   maxValue = 10;
 
@@ -41,8 +41,8 @@ export class AppComponent {
     } else {
       this.buttonText = 'Stop progress';
 
-      if (this.seconds === 0) {
-        this.seconds = 10;
+      if (this.seconds() === 0) {
+        this.seconds.set(10);
       }
 
       this.intervalId = window.setInterval(() => this.timer(), 1000);
@@ -51,8 +51,9 @@ export class AppComponent {
   }
 
   timer() {
-    this.seconds -= 1;
-    if (this.seconds === 0) {
+    this.seconds.update(value => value - 1);
+
+    if (this.seconds() === 0) {
       this.buttonText = 'Restart progress';
       this.inProgress = !this.inProgress;
       clearInterval(this.intervalId);

@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { Component, enableProdMode, provideZoneChangeDetection } from '@angular/core';
+import { Component, enableProdMode, provideZoneChangeDetection, signal } from '@angular/core';
 import { DxButtonModule, DxLoadIndicatorModule } from 'devextreme-angular';
 
 if (!/localhost/.test(document.location.host)) {
@@ -16,17 +16,17 @@ if (!/localhost/.test(document.location.host)) {
   ],
 })
 export class AppComponent {
-  loadIndicatorVisible = false;
+  loadIndicatorVisible = signal(false);
 
   buttonText = 'Send';
 
   onClick() {
     this.buttonText = 'Sending';
-    this.loadIndicatorVisible = true;
+    this.loadIndicatorVisible.set(true);
 
     setTimeout(() => {
       this.buttonText = 'Send';
-      this.loadIndicatorVisible = false;
+      this.loadIndicatorVisible.set(false);
     }, 2000);
   }
 }

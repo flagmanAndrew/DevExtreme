@@ -35,6 +35,7 @@ export class AppComponent {
   onShown() {
     setTimeout(() => {
       this.loadingVisible = false;
+      this.changeDetectorRef.markForCheck();
     }, 3000);
   }
 
